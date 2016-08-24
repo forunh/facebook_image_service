@@ -9,46 +9,10 @@ let cronJob = cron.CronJob
 var mockData = {
   "picture": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/13307361_1699730896916160_4024021109681787383_n.jpg?oh=6813ae68341be6dc1611c97aa58e104b&oe=583D78A6&__gda__=1482093415_b95fc9c2e5accafd56daf207ab72fd4f",
   "name": "CE KMITL",
-  "comment": "สวัสดีครับ คุณธรรม ในใจต้องมาพร้อมกันนะครับ สวัสดีค่ะอร่อยจังเลย สวัสดีดี",
+  "comment": "สวัสดีครับ คุณธรรม ในใจต้องมาพร้อมกันนะครับ สวัสดีค่ะอร่อยจังเลย สวัสดีดีปีใหม่เย้ เอาหัวใจมาสวัสดีกัน",
   "created_time": "2016-08-24T12:46:03+0000"
 }
 
-// export function getFiveTopHashtagImage() {
-//   return new Promise((resolve, reject) => {
-//     axios.get('http://localhost:7774/twitter/getTopFiveHashtag')
-//       .then(response => {
-//         let data = response.data
-//         let arrHashtag = new Array(data.length)
-//         data.forEach((item, index) => {
-//           generateImage(index, item, data.length).then(image => {
-//             arrHashtag[index] = image
-//           })
-//         })
-//         resolve(arrHashtag)
-//       })
-//       .catch(error => {
-//         reject(error)
-//       })
-//   })
-// }
-
-// function generateImage(order, word, size) {
-//   let Image = Canvas.Image
-//   let canvas = new Canvas(400, 200)
-//   let ctx = canvas.getContext('2d');
-//   let fontSize = 10 * (size - order)
-
-//   ctx.font = fontSize + 'px Arial';
-//   ctx.fillText(word, 50, 100);
-
-//   // var te = ctx.measureText(word);
-//   // ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-//   // ctx.beginPath();
-//   // ctx.stroke();
-//   return new Promise(resolve => {
-//     resolve(canvas.toDataURL())
-// })
-// }
 export function getLastestComment(){
 
     return new Promise((resolve, reject) => {
@@ -138,15 +102,17 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
      console.log('out ' + out)              
      console.log('----- ')     
           
-      if( spaceCount+space[spaceIndex].length-out ==textCount){
+          var metrics = context.measureText(testLine);
+      var testWidth = metrics.width;
+      if( (spaceCount+space[spaceIndex].length-out ==textCount )&& (testWidth < maxWidth)){
+     console.log(testLine)             
           spaceCount=textCount+1          
           textCount = 0
           testLine= testLine+" "
           spaceIndex=spaceIndex+1
           out = 0
       }
-      var metrics = context.measureText(testLine);
-      var testWidth = metrics.width;
+      
       if (testWidth > maxWidth && n > 0) {
         context.fillText(line, x, y)
         line = words[n]
@@ -157,6 +123,10 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
           
         }
         else{
+          console.log('line '+line.length+" "+line)
+          console.log('spaceCount ' + spaceCount) 
+          console.log('textCount ' + textCount)              
+          console.log('----- ')   
           out = textCount-spaceCount-line.length
           spaceCount=0
           
