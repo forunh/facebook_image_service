@@ -1,12 +1,12 @@
-1
+
 "use strict";
 import express from 'express'
 import bodyParser from 'body-parser'
-import twitterRouter from './controller/TwitterController'
-import { Twitter } from './model/Twitter'
+import FacebookRouter from './controller/FacebookController'
+// import { Twitter } from './model/Twitter'
 
 
-const port = process.env.port || 7773
+const port = process.env.port || 7779
 let app = express()
 
 
@@ -21,7 +21,7 @@ app.route('/').get((req, res) => {
   res.send('<h1>Social REST Api</h1><ul><li>/twitter</li><li>/facebook</li></ul>')
 })
 
-app.use('/twitter', twitterRouter)
+app.use('/facebook', FacebookRouter)
 
 //service start
 app.listen(port, () => {

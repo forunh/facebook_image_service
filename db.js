@@ -1,9 +1,9 @@
-import mongojs from 'mongojs'
+// import mongojs from 'mongojs'
 
-let databaseUrl = 'SocialData'
-let collections = ['facebook', 'twitter','tweetQuery']
+// let databaseUrl = 'SocialData'
+// let collections = ['facebook', 'twitter','tweetQuery']
 
-export const db = mongojs(databaseUrl, collections)
+// export const db = mongojs(databaseUrl, collections)
 
 // import Sequelize from 'sequelize'
 //
