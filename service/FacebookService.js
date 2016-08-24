@@ -153,12 +153,14 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
 
         if(line.length == space[spaceIndex-1].length){
           line= line+" "
+          spaceCount=line.length       
+          
         }
         else{
           out = textCount-spaceCount-line.length
+          spaceCount=0
           
         }
-         spaceCount=0
          
           console.log('line '+line.length+" "+line)
           console.log('space[spaceIndex].length ' + space[spaceIndex].length+' '+space[spaceIndex])
