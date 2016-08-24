@@ -2,6 +2,8 @@ import cron from 'cron'
 import axios from 'axios'
 import Canvas from 'canvas'
 import split from 'icu-wordsplit'
+var request = require('request').defaults({ encoding: null });
+
 
 let cronJob = cron.CronJob
 //สวัสดีครับ คุณธรรม ในใจต้องมาพร้อมกันนะครับ สวัสดีค่ะอร่อยจังเลย สวัสดีดี
@@ -21,42 +23,39 @@ export function getLastestComment(){
           let data = mockData
           let date = new Date(data.created_time)
           let Image = Canvas.Image
-          let canvas = new Canvas(400, 200)
+          let canvas = new Canvas(350, 180)
           let ctx = canvas.getContext('2d')
-          var img = new Image()
-          // img.src = 'https://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png'          
-          // img.onload = function() {
-          //   ctx.drawImage(img, 0, 0);
-          // };
+          
           ctx.fillStyle="#f6f7f9"          
-          ctx.fillRect(0,0,400,200)
+          ctx.fillRect(0,0,350,200)
           ctx.fillStyle="#3b5998"          
-          ctx.fillRect(25,40,100,120)
+          ctx.fillRect(15,30,20,20)
           ctx.font = 'bold 20px Arial'
           ctx.fillStyle="#365899"
-          ctx.fillText(data.name, 150, 50)
-          ctx.font = '18px Arial'     
+          ctx.fillText(data.name, 90, 40)
+          ctx.font = '16px Arial'     
           ctx.fillStyle="#1d2129"     
-          wrapText(ctx, data.comment, 150,80, 230, 20);
+          wrapText(ctx, data.comment, 90,70, 230, 20);
           ctx.font = '12px Arial'
           ctx.fillStyle="#90949c"                    
-          ctx.fillText(date.toString().substring(0,24), 150, 170);
+          ctx.fillText(date.toString().substring(0,24), 90, 160);
 
-          // fs.readFile("test.jpg", function(err, squid){
-          //     if (err) throw err;
-          //     img = new Image;
-          //     img.src = squid;
-          //     ctx.drawImage(img, 0, 0, img.width / 4, img.height / 4);
-          //     resolve(img.toDataURL())
-          // });
 
-          // var te = ctx.measureText('Awesome! สุดยอด');
-          // ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-          // ctx.beginPath();
-          // ctx.lineTo(50, 102);
-          // ctx.lineTo(50 + te.width, 102);
-          // ctx.stroke();
-          resolve(canvas.toDataURL())
+          request.get(data.picture, function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                  data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
+                  
+                  var image = new Image()
+                  image.onload = function() {
+                      ctx.drawImage(image, 15, 30)
+                  }
+                  image.src = data
+                  // console.log(data);
+                  resolve(canvas.toDataURL())
+                  
+              }
+          })
+          
 
       // })
       // .catch(error => {
@@ -96,16 +95,9 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
   for(var n = 0; n < words.length; n++) {
       var testLine = line + words[n]
       textCount = testLine.length
-     console.log('textCount '+textCount+" "+testLine)
-     console.log('space[spaceIndex].length ' + space[spaceIndex].length+' '+space[spaceIndex])
-     console.log('spaceCount ' + spaceCount) 
-     console.log('out ' + out)              
-     console.log('----- ')     
-          
           var metrics = context.measureText(testLine);
       var testWidth = metrics.width;
       if( (spaceCount+space[spaceIndex].length-out ==textCount )&& (testWidth < maxWidth)){
-     console.log(testLine)             
           spaceCount=textCount+1          
           textCount = 0
           testLine= testLine+" "
@@ -123,20 +115,11 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
           
         }
         else{
-          console.log('line '+line.length+" "+line)
-          console.log('spaceCount ' + spaceCount) 
-          console.log('textCount ' + textCount)              
-          console.log('----- ')   
           out = textCount-spaceCount-line.length
           spaceCount=0
           
         }
-         
-          console.log('line '+line.length+" "+line)
-          console.log('space[spaceIndex].length ' + space[spaceIndex].length+' '+space[spaceIndex])
-          console.log('spaceCount ' + spaceCount) 
-          console.log('out ' + out)              
-          console.log('----- ')   
+          
     
         if( spaceCount+space[spaceIndex].length-out == line.length){
             spaceCount=line.length+1          
