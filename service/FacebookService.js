@@ -1,26 +1,21 @@
 import cron from 'cron'
-import axios from 'axios'
+// import axios from 'axios'
 import Canvas from 'canvas'
 import split from 'icu-wordsplit'
 var request = require('request').defaults({ encoding: null });
 
 
 let cronJob = cron.CronJob
-//สวัสดีครับ คุณธรรม ในใจต้องมาพร้อมกันนะครับ สวัสดีค่ะอร่อยจังเลย สวัสดีดี
-//hi hello what is it yo hello hi very good wow amazing
-var mockData = {
-  "picture": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xap1/v/t1.0-1/p50x50/13307361_1699730896916160_4024021109681787383_n.jpg?oh=6813ae68341be6dc1611c97aa58e104b&oe=583D78A6&__gda__=1482093415_b95fc9c2e5accafd56daf207ab72fd4f",
-  "name": "CE KMITL",
-  "comment": "สวัสดีครับ คุณธรรม ในใจต้องมาพร้อมกันนะครับ สวัสดีค่ะอร่อยจังเลย สวัสดีดีปีใหม่เย้ เอาหัวใจมาสวัสดีกัน",
-  "created_time": "2016-08-24T12:46:03+0000"
-}
 
-export function getLastestComment(){
+export function getLastestComment(url){
 
     return new Promise((resolve, reject) => {
-    // axios.get('http://localhost:7775/facebook/getLatestComment/kmids')
-    //   .then(response => {
-          let data = mockData
+    
+    request.get(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            let res = new Buffer(body).toString()
+            
+          let data = JSON.parse(res)
           let date = new Date(data.created_time)
           let Image = Canvas.Image
           let canvas = new Canvas(350, 180)
@@ -50,17 +45,14 @@ export function getLastestComment(){
                       ctx.drawImage(image, 15, 30)
                   }
                   image.src = data
-                  // console.log(data);
+                  // console.log(response);
                   resolve(canvas.toDataURL())
                   
               }
           })
-          
+        }
+    })
 
-      // })
-      // .catch(error => {
-      //   reject(error)
-      // })
   })
 }
 
