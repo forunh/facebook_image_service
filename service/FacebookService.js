@@ -56,24 +56,24 @@ export function getLastestComment(url){
   })
 }
 
-export function testCanvas() {
-    let Image = Canvas.Image
-    let canvas = new Canvas(400, 200)
-    let ctx = canvas.getContext('2d');
+// export function testCanvas() {
+//     let Image = Canvas.Image
+//     let canvas = new Canvas(400, 200)
+//     let ctx = canvas.getContext('2d');
 
-    ctx.font = '30px Arial';
-    ctx.fillText("Awesome! สุดยอด", 50, 100);
+//     ctx.font = '30px Arial';
+//     ctx.fillText("Awesome! สุดยอด", 50, 100);
 
-    var te = ctx.measureText('Awesome! สุดยอด');
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-    ctx.beginPath();
-    ctx.lineTo(50, 102);
-    ctx.lineTo(50 + te.width, 102);
-    ctx.stroke();
-    return new Promise(resolve => {
-      resolve(canvas.toDataURL())
-  })
-}
+//     var te = ctx.measureText('Awesome! สุดยอด');
+//     ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+//     ctx.beginPath();
+//     ctx.lineTo(50, 102);
+//     ctx.lineTo(50 + te.width, 102);
+//     ctx.stroke();
+//     return new Promise(resolve => {
+//       resolve(canvas.toDataURL())
+//   })
+// }
 
 function wrapText(context, text, x, y, maxWidth, lineHeight) {
   var words = split('th_TH',text)
