@@ -10,27 +10,58 @@ let cronJob = cron.CronJob
 export function getLastestComment(url){
 
     return new Promise((resolve, reject) => {
+        request.get(url, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                let res = new Buffer(body).toString()
+                let data = JSON.parse(res)
+                let imgArray = new Array()
+                // console.log(data)
+                for(let i=0;i<data.length;i++){
+                    getImage(data[i]).then(img => {
+                        imgArray[i] = img
+                        // console.log(img)
+                        if(i ==0){
+                            console.log(imgArray)
+                            resolve(imgArray)       
+                            
+                        }
+                    })
+                }
+
+                // resolve(data)       
+                             
+            }
+        })
+    })
+}
+
+export function getImage(data){
+
+    return new Promise((resolve, reject) => {
     
-    request.get(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            let res = new Buffer(body).toString()
-            
-          let data = JSON.parse(res)
           let date = new Date(data.created_time)
           let Image = Canvas.Image
-          let canvas = new Canvas(350, 180)
+          let canvas = new Canvas(370, 180)
           let ctx = canvas.getContext('2d')
           
           ctx.fillStyle="#f6f7f9"          
-          ctx.fillRect(0,0,350,200)
+          ctx.fillRect(0,0,370,200)
           ctx.fillStyle="#3b5998"          
           ctx.fillRect(15,30,20,20)
-          ctx.font = 'bold 20px Arial'
+          ctx.font = 'bold 16px Arial'
           ctx.fillStyle="#365899"
           ctx.fillText(data.name, 90, 40)
-          ctx.font = '16px Arial'     
-          ctx.fillStyle="#1d2129"     
-          wrapText(ctx, data.comment, 90,70, 230, 20);
+          
+          ctx.font = '14px Arial'     
+          ctx.fillStyle="#1d2129"   
+          if(data.comment){  
+            wrapText(ctx, data.comment, 90,70, 230, 20);
+          }
+          else{
+            context.fillText("<sticker>", 90,70 );
+
+          }
+          
           ctx.font = '12px Arial'
           ctx.fillStyle="#90949c"                    
           ctx.fillText(date.toString().substring(0,24), 90, 160);
@@ -45,15 +76,14 @@ export function getLastestComment(url){
                       ctx.drawImage(image, 15, 30)
                   }
                   image.src = data
-                  // console.log(response);
+        //           // console.log(response);
                   resolve(canvas.toDataURL())
                   
               }
           })
-        }
-    })
+        })
 
-  })
+
 }
 
 // export function testCanvas() {

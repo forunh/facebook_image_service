@@ -16,7 +16,7 @@ FacebookRouter.route('/testCanvas').get((req, res) => {
 
 FacebookRouter.route('/getLatestComment/kmids').get((req, res) => {
   FacebookService.getLastestComment('http://localhost:8880/facebook/getLatestComment/kmids').then(canvas => {
-    res.send('<img src="' + canvas + '" />')
+    res.send( {images: canvas} )
     
   })
 })
