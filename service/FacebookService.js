@@ -46,7 +46,7 @@ export function getLastestComment(url){
                   }
                   image.src = data
                   // console.log(response);
-                  resolve(canvas.toDataURL())
+                  resolve([canvas.toDataURL()])
                   
               }
           })
