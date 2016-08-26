@@ -101,7 +101,7 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
         context.fillText(line, x, y)
         line = words[n]
 
-        if(line.length == space[spaceIndex-1].length){
+        if(spaceIndex>0&&line.length == space[spaceIndex-1].length){
           line= line+" "
           spaceCount=line.length       
           

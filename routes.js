@@ -6,7 +6,7 @@ import FacebookRouter from './controller/FacebookController'
 // import { Twitter } from './model/Twitter'
 
 
-const port = process.env.port || 7770
+const port = process.env.port || 7771
 let app = express()
 
 
